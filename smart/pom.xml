@@ -282,6 +282,7 @@
 	                <include>**/*.xml</include>  
 	                <include>**/*.tld</include>  
                   </includes>  
+                  
                    <filtering>false</filtering>  
             </resource>  
         </resources>  
