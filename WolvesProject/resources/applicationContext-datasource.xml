@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<context:property-placeholder ignore-unresolvable="true" location="classpath:/resources/wolves.properties" />
+	
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<!-- 数据库基本配置 -->
+		<property name="driverClassName" value="${wolves.driverClassName}"/>
+		<property name="url" value="${wolves.url}"/>
+		<property name="username" value="${wolves.username}"/>
+		<property name="password" value="${wolves.password}" />
+		<!-- 连接池配置 -->
+		<property name="initialSize" value="${druid.initialSize}" />
+		<property name="minIdle" value="${druid.minIdle}"/>
+		<property name="maxActive" value="${druid.minIdle}" />
+		<property name="maxWait" value="${druid.minIdle}"/>
+		<property name="timeBetweenConnectErrorMillis" value="${druid.timeBetweenConnectErrorMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${druid.timeBetweenConnectErrorMillis}" />
+		<property name="validationQuery" value="${druid.validationQuery}"/>
+		<property name="testOnBorrow" value="${druid.testOnBorrow}"/>
+		<property name="testOnReturn" value="${druid.testOnBorrow}"/>
+		<property name="testWhileIdle" value="${druid.testWhileIdle}"/>
+		<property name="poolPreparedStatements" value="${druid.poolPreparedStatements}"/>
+		<property name="maxPoolPreparedStatementPerConnectionSize" value="${druid.maxPoolPreparedStatementPerConnectionSize}"/>
+		<property name="filters" value="${druid.testWhileIdle}"/>
+	</bean>
+</beans>
