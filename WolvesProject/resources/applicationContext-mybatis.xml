@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!-- 定义SqlSessionFactory -->
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:mappings/**/*.xml" />
+	</bean>
+	<!-- 浏览自动注入mapper的包 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" ref="sessionFactory" />
+		<property name="basePackage" value="com.qyw.wolves" />
+		<property name="annotationClass" value="com.qyw.wolves.annotation.MyBatisDAO" />
+	</bean>
+
+	<!--定义事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- AOP配置数据事务管理，也可以采用注解方式，也可以写在LoggerAspect里面 -->
+	<tx:advice  id="txAdvice"  transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="query*" propagation="NOT_SUPPORTED" />
+			<tx:method name="get*" propagation="NOT_SUPPORTED" />
+			<tx:method name="find*" propagation="NOT_SUPPORTED" />
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	
+	 <!-- 对子类业务逻辑层实施事务 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* com.qyw.wolves.**.service.*.*(..))" id="txPointcut"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+	</aop:config>
+	
+	<!-- 注解方式的事务拦截器 开启 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+</beans> 

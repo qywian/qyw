@@ -11,21 +11,23 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
-	<!-- 缓存配置 -->
-	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-		<property name="configLocation" value="classpath:/resources/applicationContext-cache.xml" />
-	</bean>
-
-	<!-- 导入数据源配置 -->
-	<import resource="springContext-datasource.xml" />
-
-	<!-- 导入mybatis配置 -->
-	<import resource="classpath:applicationContext-mybatis" />
-
-	<!-- 导入jpa配置 -->
-	<import resource="classpath:applicationContext-jpa" />
 
 	<!-- 启动对@AspectJ（面向切面）注解的支持 -->
 	<aop:aspectj-autoproxy />
+	
+	<!-- 导入数据源配置 -->
+	<import resource="classpath:applicationContext-datasource.xml" />
+
+	<!-- 导入mybatis配置 -->
+	<import resource="classpath:applicationContext-mybatis.xml" />
+
+	<!-- 导入jpa配置 -->
+	<import resource="classpath:applicationContext-jpa.xml" />
+	
+	<!-- 缓存配置 -->
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:applicationContext-cache.xml" />
+	</bean>
+
 
 </beans>
