@@ -11,8 +11,7 @@
 
 	<context:property-placeholder ignore-unresolvable="true" location="classpath:wolves.properties"/>
 
-	<bean id="hibernateJpaVendorAdapter"
-		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+	<bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 		<property name="databasePlatform" value="${hibernate.dialect}"></property>
 	</bean>
 

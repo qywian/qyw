@@ -15,7 +15,8 @@
 	</bean>
 	<!-- 浏览自动注入mapper的包 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="sqlSessionFactoryBeanName" ref="sqlSessionFactory" />
+		<!-- 这边不能使用ref="sqlSessionFactory"原因是因为上面加载配置文件导致这边引用会报错 -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 		<property name="basePackage" value="com.qyw.wolves" />
 		<property name="annotationClass" value="com.qyw.wolves.annotation.MyBatisDAO" />
 	</bean>

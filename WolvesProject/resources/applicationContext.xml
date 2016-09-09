@@ -42,6 +42,7 @@
 	</bean>
 	
 	
+	
 	<!-- 导入mybatis配置 -->
 	<import resource="applicationContext-mybatis.xml" />
 
