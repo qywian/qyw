@@ -4,23 +4,24 @@
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd"
+		default-lazy-init="true">
 
 	<!-- 定义SqlSessionFactory -->
-	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="mapperLocations" value="classpath:mappings/**/*.xml" />
+		<property name="typeAliasesPackage" value="com.qyw.wolves"/>
+		<property name="mapperLocations" value="classpath*:mappings/**/*.xml" />
 	</bean>
 	<!-- 浏览自动注入mapper的包 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="sqlSessionFactoryBeanName" ref="sessionFactory" />
+		<property name="sqlSessionFactoryBeanName" ref="sqlSessionFactory" />
 		<property name="basePackage" value="com.qyw.wolves" />
 		<property name="annotationClass" value="com.qyw.wolves.annotation.MyBatisDAO" />
 	</bean>
 
 	<!--定义事务 -->
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 

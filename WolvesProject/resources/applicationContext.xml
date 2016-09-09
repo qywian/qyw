@@ -4,31 +4,52 @@
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
-   
-   <!-- 导入数据源配置 -->
-	<import resource="classpath:applicationContext-datasource.xml" />
-	
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd"
+		default-lazy-init="true">
+		
+	<context:property-placeholder ignore-unresolvable="true" location="classpath:wolves.properties"/>
+
 	<context:component-scan base-package="com.qyw.wolves">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
-
-
-	<!-- 启动对@AspectJ（面向切面）注解的支持 -->
-	<aop:aspectj-autoproxy />
 	
 	
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<!-- 数据库基本配置 -->
+		<property name="driverClassName" value="${wolves.driverClassName}" />
+		<property name="url" value="${wolves.url}" />
+		<property name="username" value="${wolves.username}" />
+		<property name="password" value="${wolves.password}" />
+		<!-- 连接池配置 -->
+		<property name="initialSize" value="${druid.initialSize}" />
+		<property name="minIdle" value="${druid.minIdle}" />
+		<property name="maxActive" value="${druid.maxActive}" />
+		<property name="maxWait" value="${druid.maxWait}" />
+		<property name="timeBetweenConnectErrorMillis" value="${druid.timeBetweenConnectErrorMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
+		<property name="validationQuery" value="${druid.validationQuery}" />
+		<property name="testOnBorrow" value="${druid.testOnBorrow}" />
+		<property name="testOnReturn" value="${druid.testOnReturn}" />
+		<property name="testWhileIdle" value="${druid.testWhileIdle}" />
+		<property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize" value="${druid.maxPoolPreparedStatementPerConnectionSize}" />
+		<property name="filters" value="${druid.filters}" />
+	</bean>
 
-	<!-- 导入mybatis配置 -->
-	<import resource="classpath:applicationContext-mybatis.xml" />
-
-	<!-- 导入jpa配置 -->
-	<import resource="classpath:applicationContext-jpa.xml" />
-	
 	<!-- 缓存配置 -->
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
 		<property name="configLocation" value="classpath:applicationContext-cache.xml" />
 	</bean>
+	
+	
+	<!-- 导入mybatis配置 -->
+	<import resource="applicationContext-mybatis.xml" />
 
+	<!-- 导入jpa配置 -->
+	<import resource="applicationContext-jpa.xml" />
+
+	<!-- 启动对@AspectJ（面向切面）注解的支持 -->
+	<aop:aspectj-autoproxy />
+	
 
 </beans>
